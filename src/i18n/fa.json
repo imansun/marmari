@@ -1,0 +1,26 @@
+{
+  "common": {
+    "created": "با موفقیت ایجاد شد",
+    "updated": "با موفقیت به‌روزرسانی شد",
+    "deleted": "با موفقیت حذف شد",
+    "notFound": "پیدا نشد",
+    "unauthorized": "دسترسی غیرمجاز",
+    "forbidden": "دسترسی ممنوع",
+    "validationError": "خطای اعتبارسنجی",
+    "serverError": "خطای داخلی سرور",
+    "welcome": "به API سیستم مرمری خوش آمدید",
+    "healthOk": "سیستم سالم است"
+  },
+  "auth": {
+    "loginSuccess": "ورود با موفقیت انجام شد",
+    "loginFailed": "نام کاربری یا رمز عبور اشتباه است",
+    "registerSuccess": "ثبت‌نام با موفقیت انجام شد",
+    "tokenExpired": "توکن منقضی شده است",
+    "tokenInvalid": "توکن نامعتبر است"
+  },
+  "reports": {
+    "executionStarted": "اجرای گزارش شروع شد",
+    "executionDone": "اجرای گزارش تکمیل شد",
+    "executionFailed": "اجرای گزارش شکست خورد"
+  }
+}

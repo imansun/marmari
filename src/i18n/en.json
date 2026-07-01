@@ -1,0 +1,26 @@
+{
+  "common": {
+    "created": "Created successfully",
+    "updated": "Updated successfully",
+    "deleted": "Deleted successfully",
+    "notFound": "Not found",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Access denied",
+    "validationError": "Validation error",
+    "serverError": "Internal server error",
+    "welcome": "Welcome to Marmari ERP API",
+    "healthOk": "System is healthy"
+  },
+  "auth": {
+    "loginSuccess": "Login successful",
+    "loginFailed": "Invalid credentials",
+    "registerSuccess": "Registration successful",
+    "tokenExpired": "Token expired",
+    "tokenInvalid": "Invalid token"
+  },
+  "reports": {
+    "executionStarted": "Report execution started",
+    "executionDone": "Report execution completed",
+    "executionFailed": "Report execution failed"
+  }
+}

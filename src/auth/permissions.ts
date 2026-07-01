@@ -1,0 +1,160 @@
+export enum Permission {
+  // System
+  SYSTEM_ADMIN = 'system:admin',
+  SYSTEM_CONFIG = 'system:config',
+
+  // Users
+  USER_CREATE = 'user:create',
+  USER_READ = 'user:read',
+  USER_UPDATE = 'user:update',
+  USER_DELETE = 'user:delete',
+
+  // Accounts
+  ACCOUNT_CREATE = 'account:create',
+  ACCOUNT_READ = 'account:read',
+  ACCOUNT_UPDATE = 'account:update',
+  ACCOUNT_DELETE = 'account:delete',
+
+  // Vouchers
+  VOUCHER_CREATE = 'voucher:create',
+  VOUCHER_READ = 'voucher:read',
+  VOUCHER_UPDATE = 'voucher:update',
+  VOUCHER_DELETE = 'voucher:delete',
+  VOUCHER_CONFIRM = 'voucher:confirm',
+  VOUCHER_APPROVE = 'voucher:approve',
+
+  // Inventory
+  INVENTORY_CREATE = 'inventory:create',
+  INVENTORY_READ = 'inventory:read',
+  INVENTORY_UPDATE = 'inventory:update',
+  INVENTORY_DELETE = 'inventory:delete',
+
+  // Sales
+  SALES_CREATE = 'sales:create',
+  SALES_READ = 'sales:read',
+  SALES_UPDATE = 'sales:update',
+  SALES_DELETE = 'sales:delete',
+  SALES_CONFIRM = 'sales:confirm',
+  SALES_SHIP = 'sales:ship',
+
+  // Purchase
+  PURCHASE_CREATE = 'purchase:create',
+  PURCHASE_READ = 'purchase:read',
+  PURCHASE_UPDATE = 'purchase:update',
+  PURCHASE_DELETE = 'purchase:delete',
+  PURCHASE_APPROVE = 'purchase:approve',
+  PURCHASE_RECEIVE = 'purchase:receive',
+
+  // Reports
+  REPORT_VIEW = 'report:view',
+  REPORT_EXPORT = 'report:export',
+  REPORT_EXECUTE = 'report:execute',
+
+  // HR
+  HR_CREATE = 'hr:create',
+  HR_READ = 'hr:read',
+  HR_UPDATE = 'hr:update',
+  HR_DELETE = 'hr:delete',
+
+  // Fleet
+  FLEET_CREATE = 'fleet:create',
+  FLEET_READ = 'fleet:read',
+  FLEET_UPDATE = 'fleet:update',
+  FLEET_DELETE = 'fleet:delete',
+
+  // Transport
+  TRANSPORT_CREATE = 'transport:create',
+  TRANSPORT_READ = 'transport:read',
+  TRANSPORT_UPDATE = 'transport:update',
+  TRANSPORT_DELETE = 'transport:delete',
+
+  // All
+  ALL = '*',
+}
+
+export const RolePermissions: Record<string, Permission[]> = {
+  super_admin: [Permission.ALL],
+  admin: [
+    Permission.SYSTEM_CONFIG,
+    Permission.USER_CREATE,
+    Permission.USER_READ,
+    Permission.USER_UPDATE,
+    Permission.USER_DELETE,
+    Permission.ACCOUNT_CREATE,
+    Permission.ACCOUNT_READ,
+    Permission.ACCOUNT_UPDATE,
+    Permission.ACCOUNT_DELETE,
+    Permission.VOUCHER_CREATE,
+    Permission.VOUCHER_READ,
+    Permission.VOUCHER_UPDATE,
+    Permission.VOUCHER_DELETE,
+    Permission.VOUCHER_CONFIRM,
+    Permission.VOUCHER_APPROVE,
+    Permission.INVENTORY_CREATE,
+    Permission.INVENTORY_READ,
+    Permission.INVENTORY_UPDATE,
+    Permission.INVENTORY_DELETE,
+    Permission.SALES_CREATE,
+    Permission.SALES_READ,
+    Permission.SALES_UPDATE,
+    Permission.SALES_DELETE,
+    Permission.SALES_CONFIRM,
+    Permission.SALES_SHIP,
+    Permission.PURCHASE_CREATE,
+    Permission.PURCHASE_READ,
+    Permission.PURCHASE_UPDATE,
+    Permission.PURCHASE_DELETE,
+    Permission.PURCHASE_APPROVE,
+    Permission.PURCHASE_RECEIVE,
+    Permission.REPORT_VIEW,
+    Permission.REPORT_EXPORT,
+    Permission.REPORT_EXECUTE,
+    Permission.HR_CREATE,
+    Permission.HR_READ,
+    Permission.HR_UPDATE,
+    Permission.HR_DELETE,
+    Permission.FLEET_CREATE,
+    Permission.FLEET_READ,
+    Permission.FLEET_UPDATE,
+    Permission.FLEET_DELETE,
+    Permission.TRANSPORT_CREATE,
+    Permission.TRANSPORT_READ,
+    Permission.TRANSPORT_UPDATE,
+    Permission.TRANSPORT_DELETE,
+  ],
+  manager: [
+    Permission.USER_READ,
+    Permission.ACCOUNT_CREATE,
+    Permission.ACCOUNT_READ,
+    Permission.ACCOUNT_UPDATE,
+    Permission.VOUCHER_CREATE,
+    Permission.VOUCHER_READ,
+    Permission.VOUCHER_CONFIRM,
+    Permission.INVENTORY_CREATE,
+    Permission.INVENTORY_READ,
+    Permission.SALES_CREATE,
+    Permission.SALES_READ,
+    Permission.SALES_CONFIRM,
+    Permission.SALES_SHIP,
+    Permission.PURCHASE_CREATE,
+    Permission.PURCHASE_READ,
+    Permission.PURCHASE_APPROVE,
+    Permission.PURCHASE_RECEIVE,
+    Permission.REPORT_VIEW,
+    Permission.REPORT_EXECUTE,
+    Permission.HR_READ,
+    Permission.FLEET_READ,
+    Permission.TRANSPORT_READ,
+  ],
+  user: [
+    Permission.USER_READ,
+    Permission.ACCOUNT_READ,
+    Permission.VOUCHER_CREATE,
+    Permission.VOUCHER_READ,
+    Permission.INVENTORY_READ,
+    Permission.SALES_READ,
+    Permission.PURCHASE_READ,
+    Permission.REPORT_VIEW,
+    Permission.HR_READ,
+  ],
+};
