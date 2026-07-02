@@ -1,13 +1,49 @@
-import { Resolver, Query, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, ObjectType, Field } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql';
 import { UsersService } from '../users/users.service';
 
-@Resolver('User')
+@ObjectType()
+class GraphQLUser {
+  @Field()
+  id: string;
+
+  @Field()
+  username: string;
+
+  @Field()
+  email: string;
+
+  @Field({ nullable: true })
+  firstName?: string;
+
+  @Field({ nullable: true })
+  lastName?: string;
+
+  @Field()
+  isActive: boolean;
+
+  @Field()
+  status: string;
+
+  @Field(() => [String])
+  roles: string[];
+
+  @Field({ nullable: true })
+  lastLoginAt?: Date;
+
+  @Field()
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
+}
+
+@Resolver()
 export class UserResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query('users')
-  async getUsers(
+  @Query(() => [GraphQLUser])
+  async users(
     @Args('page', { type: () => Int, nullable: true }) page?: number,
     @Args('limit', { type: () => Int, nullable: true }) limit?: number,
   ) {
@@ -18,8 +54,8 @@ export class UserResolver {
     return result.data;
   }
 
-  @Query('user')
-  async getUser(@Args('id') id: string) {
+  @Query(() => GraphQLUser)
+  async user(@Args('id') id: string) {
     try {
       return await this.usersService.findOne(id);
     } catch {

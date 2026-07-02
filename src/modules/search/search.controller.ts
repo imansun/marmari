@@ -1,11 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiBearerAuth,
-  ApiOperation,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { SearchService } from './search.service';
+import { SearchQueryDto } from './dto/search.dto';
 
 @ApiTags('Search')
 @ApiBearerAuth()
@@ -15,20 +11,15 @@ export class SearchController {
 
   @Get(':entityType')
   @ApiOperation({ summary: 'Full-text search across an entity type' })
-  @ApiQuery({ name: 'q', required: true })
-  @ApiQuery({ name: 'page', required: false })
-  @ApiQuery({ name: 'limit', required: false })
   async search(
     @Param('entityType') entityType: string,
-    @Query('q') q: string,
-    @Query('page') page?: string,
-    @Query('limit') limit?: string,
+    @Query() query: SearchQueryDto,
   ) {
     return this.searchService.search(
       entityType,
-      q,
-      Number(page) || 1,
-      Number(limit) || 20,
+      query.q,
+      query.page || 1,
+      query.limit || 20,
     );
   }
 }

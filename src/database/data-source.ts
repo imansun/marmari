@@ -8,8 +8,11 @@ export default new DataSource({
   port: parseInt(process.env.DB_PORT ?? '5432', 10),
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || '97531372',
-  database: process.env.DB_NAME || 'superapp',
-  entities: ['src/**/*.entity.ts'],
+  database: process.env.DB_DATABASE || process.env.DB_NAME || 'superapp',
+  entities: ['src/modules/**/*.entity.ts', 'src/database/entities/*.entity.ts'],
   migrations: ['src/database/migrations/*.ts'],
   migrationsTableName: 'migrations',
+  extra: {
+    searchPath: 'public',
+  },
 });

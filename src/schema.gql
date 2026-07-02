@@ -1,0 +1,27 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type GraphQLUser {
+  createdAt: DateTime!
+  email: String!
+  firstName: String
+  id: String!
+  isActive: Boolean!
+  lastLoginAt: DateTime
+  lastName: String
+  roles: [String!]!
+  status: String!
+  updatedAt: DateTime!
+  username: String!
+}
+
+type Query {
+  user(id: String!): GraphQLUser!
+  users(limit: Int, page: Int): [GraphQLUser!]!
+}

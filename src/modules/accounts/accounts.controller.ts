@@ -56,6 +56,26 @@ export class AccountsController {
     return this.accountsService.softDelete(id);
   }
 
+  @Get('tree')
+  @ApiOperation({ summary: 'Get chart of accounts tree' })
+  getTree() {
+    return this.accountsService.getTree();
+  }
+
+  @Get('categories')
+  @ApiOperation({ summary: 'Get balances by category' })
+  getCategories() {
+    return this.accountsService.getCategoryBalances();
+  }
+
+  @Get(':id/children')
+  @ApiOperation({ summary: 'Get child accounts' })
+  getChildren(@Param('id') id: string) {
+    return this.accountsService
+      .findOne(id)
+      .then((a) => this.accountsService.getChildren(a.code));
+  }
+
   @Get(':id/balance')
   @ApiOperation({ summary: 'Get account balance' })
   getBalance(@Param('id') id: string) {

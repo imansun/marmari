@@ -7,6 +7,7 @@ import { CoreModule } from './core';
 import { CacheModule } from './cache';
 import { I18nModule } from './i18n';
 import { LoggerModule } from './logger';
+import { EventsModule } from './events';
 import { MetricsModule } from './metrics';
 import { HealthModule } from './health';
 import { AuthModule } from './modules/auth';
@@ -21,6 +22,14 @@ import { ChequesModule } from './modules/cheques';
 import { TransfersModule } from './modules/transfers';
 import { BudgetsModule } from './modules/budgets';
 import { CostCentersModule } from './modules/cost-centers';
+import { FiscalYearsModule } from './modules/fiscal-years';
+import { AccountGroupsModule } from './modules/account-groups';
+import { AccountDetailsModule } from './modules/account-details';
+import { PettyCashModule } from './modules/petty-cash';
+import { BankReconciliationModule } from './modules/bank-reconciliation';
+import { GuaranteesModule } from './modules/guarantees';
+import { VoucherPatternsModule } from './modules/voucher-patterns';
+import { YearEndClosingModule } from './modules/year-end-closing';
 import { InventoryModule } from './modules/inventory';
 import { PurchaseOrdersModule } from './modules/purchase-orders';
 import { SalesOrdersModule } from './modules/sales-orders';
@@ -53,6 +62,8 @@ import { JobsModule } from './modules/jobs';
 import { NotificationsModule } from './modules/notifications';
 import { GraphqlModule } from './modules/graphql';
 import { IntegrationModule } from './modules/integration';
+import { ReportingModule } from './modules/reporting';
+import { LegacyModule } from './legacy/legacy.module';
 import { SeedService } from './database/seed.service';
 import { PermissionsGuard } from './auth/permissions.guard';
 import { SchemaInterceptor } from './database/schema.interceptor';
@@ -70,6 +81,7 @@ import {
       load: configs,
       envFilePath: '.env',
     }),
+    EventsModule,
     DatabaseModule,
     CoreModule,
     CacheModule,
@@ -86,6 +98,14 @@ import {
     TransfersModule,
     BudgetsModule,
     CostCentersModule,
+    FiscalYearsModule,
+    AccountGroupsModule,
+    AccountDetailsModule,
+    PettyCashModule,
+    BankReconciliationModule,
+    GuaranteesModule,
+    VoucherPatternsModule,
+    YearEndClosingModule,
     InventoryModule,
     PurchaseOrdersModule,
     SalesOrdersModule,
@@ -118,6 +138,8 @@ import {
     NotificationsModule,
     GraphqlModule,
     IntegrationModule,
+    ReportingModule,
+    LegacyModule,
     LoggerModule,
     MetricsModule,
     HealthModule,

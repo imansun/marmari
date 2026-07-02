@@ -35,6 +35,18 @@ export class InvoicingController {
     });
   }
 
+  @Get('overdue')
+  @ApiOperation({ summary: 'Get overdue invoices' })
+  getOverdue() {
+    return this.invoicingService.getOverdue();
+  }
+
+  @Get('summary')
+  @ApiOperation({ summary: 'Get invoice summary statistics' })
+  getSummary() {
+    return this.invoicingService.getSummary();
+  }
+
   @Get('party/:partyId')
   @ApiOperation({ summary: 'Get invoices by party' })
   findByParty(@Param('partyId') partyId: string) {

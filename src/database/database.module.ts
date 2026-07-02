@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EntityEventSubscriber } from './subscribers/entity-event.subscriber';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           password: config.get<string>('database.password'),
           database: config.get<string>('database.database'),
           autoLoadEntities: true,
-          synchronize: true,
+          synchronize: false,
           logging: config.get<string>('app.nodeEnv') === 'development',
           extra: {
             searchPath: schemas.join(', '),
@@ -26,5 +27,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       },
     }),
   ],
+  providers: [EntityEventSubscriber],
 })
 export class DatabaseModule {}

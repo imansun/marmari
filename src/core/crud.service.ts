@@ -56,11 +56,19 @@ export abstract class CrudService<T extends ObjectLiteral> {
     const limit = pagination.limit ?? 20;
     const skip = (page - 1) * limit;
 
-    const [data, total] = await this.repository.findAndCount({
+    const queryOptions: FindManyOptions<T> = {
       skip,
       take: limit,
       ...options,
-    });
+    };
+
+    if (pagination.sortBy) {
+      queryOptions.order = {
+        [pagination.sortBy]: pagination.sortOrder || 'DESC',
+      } as any;
+    }
+
+    const [data, total] = await this.repository.findAndCount(queryOptions);
 
     const safeLimit = limit || 20;
     const totalPages = Math.ceil(total / safeLimit);

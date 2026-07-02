@@ -1,0 +1,161 @@
+import { Entity, Column, PrimaryColumn } from 'typeorm';
+
+@Entity({ schema: 'sepidejam_sepidejam_sg3', name: 'ReviewInvoicePolicyResult' })
+export class LegacyReviewInvoicePolicyResult {
+  @PrimaryColumn({ type: 'bigint', name: 'ReviewInvoicePolicyResultID' })
+  reviewInvoicePolicyResultID: number;
+
+  @Column({ type: 'bigint', name: 'InvoiceItemRef' })
+  invoiceItemRef: number;
+
+  @Column({ type: 'bigint', name: 'BusinessPolicyRef' })
+  businessPolicyRef: number;
+
+  @Column({ type: 'numeric', name: 'BusinessPolicyPrice' })
+  businessPolicyPrice: number;
+
+  @Column({ type: 'character varying', name: 'BusinessPolicyType' })
+  businessPolicyType: string;
+
+  @Column({ type: 'bigint', name: 'InvoiceID' })
+  invoiceID: number;
+
+  @Column({ type: 'bigint', name: 'FiscalYearRef' })
+  fiscalYearRef: number;
+
+  @Column({ type: 'bigint', name: 'BranchRef' })
+  branchRef: number;
+
+  @Column({ type: 'bigint', name: 'SalesOfficeRef' })
+  salesOfficeRef: number;
+
+  @Column({ type: 'bigint', name: 'CustomerRef' })
+  customerRef: number;
+
+  @Column({ type: 'bigint', name: 'SalesTypeRef' })
+  salesTypeRef: number;
+
+  @Column({ type: 'bigint', name: 'SalesAreaRef' })
+  salesAreaRef: number;
+
+  @Column({ type: 'bigint', name: 'SalesChannelRef' })
+  salesChannelRef: number;
+
+  @Column({ type: 'bigint', name: 'SalesDivisionRef' })
+  salesDivisionRef: number;
+
+  @Column({ type: 'bigint', name: 'SalesOrganizationRef' })
+  salesOrganizationRef: number;
+
+  @Column({ type: 'bigint', name: 'CurrencyRef' })
+  currencyRef: number;
+
+  @Column({ type: 'bigint', name: 'BrokerRef' })
+  brokerRef: number;
+
+  @Column({ type: 'bigint', name: 'PaymentAgreementRef' })
+  paymentAgreementRef: number;
+
+  @Column({ type: 'bigint', name: 'InventoryRef' })
+  inventoryRef: number;
+
+  @Column({ type: 'bigint', name: 'PlantRef' })
+  plantRef: number;
+
+  @Column({ type: 'bigint', name: 'ShippingPointRef' })
+  shippingPointRef: number;
+
+  @Column({ type: 'bigint', name: 'RecipientPartyRef' })
+  recipientPartyRef: number;
+
+  @Column({ type: 'bigint', name: 'PayerAccountRef' })
+  payerAccountRef: number;
+
+  @Column({ type: 'bigint', name: 'PayerPartyRef' })
+  payerPartyRef: number;
+
+  @Column({ type: 'bigint', name: 'DeliveryAddressRef' })
+  deliveryAddressRef: number;
+
+  @Column({ type: 'integer', name: 'DeliveryAddressType' })
+  deliveryAddressType: number;
+
+  @Column({ type: 'numeric', name: 'OperationalCurrencyExchangeRate' })
+  operationalCurrencyExchangeRate: number;
+
+  @Column({ type: 'character varying', name: 'Number' })
+  number: string;
+
+  @Column({ type: 'timestamp without time zone', name: 'Date' })
+  date: Date;
+
+  @Column({ type: 'integer', name: 'State' })
+  state: number;
+
+  @Column({ type: 'integer', name: 'Type' })
+  type: number;
+
+  @Column({ type: 'integer', name: 'DeliveryState' })
+  deliveryState: number;
+
+  @Column({ type: 'bigint', name: 'ReferenceRef', nullable: true })
+  referenceRef: number | null;
+
+  @Column({ type: 'integer', name: 'ReferenceType' })
+  referenceType: number;
+
+  @Column({ type: 'integer', name: 'RowNumber' })
+  rowNumber: number;
+
+  @Column({ type: 'bigint', name: 'ProductRef' })
+  productRef: number;
+
+  @Column({ type: 'numeric', name: 'Fee' })
+  fee: number;
+
+  @Column({ type: 'numeric', name: 'ReductionAmount' })
+  reductionAmount: number;
+
+  @Column({ type: 'numeric', name: 'AdditionAmount' })
+  additionAmount: number;
+
+  @Column({ type: 'numeric', name: 'Price' })
+  price: number;
+
+  @Column({ type: 'numeric', name: 'Tax' })
+  tax: number;
+
+  @Column({ type: 'character varying', name: 'TrackingFactor1', nullable: true })
+  trackingFactor1: string | null;
+
+  @Column({ type: 'character varying', name: 'TrackingFactor2', nullable: true })
+  trackingFactor2: string | null;
+
+  @Column({ type: 'character varying', name: 'TrackingFactor3', nullable: true })
+  trackingFactor3: string | null;
+
+  @Column({ type: 'character varying', name: 'TrackingFactor4', nullable: true })
+  trackingFactor4: string | null;
+
+  @Column({ type: 'character varying', name: 'TrackingFactor5', nullable: true })
+  trackingFactor5: string | null;
+
+  @Column({ type: 'bigint', name: 'PartTrackingFactorRef1', nullable: true })
+  partTrackingFactorRef1: number | null;
+
+  @Column({ type: 'bigint', name: 'PartTrackingFactorRef2', nullable: true })
+  partTrackingFactorRef2: number | null;
+
+  @Column({ type: 'bigint', name: 'PartTrackingFactorRef3', nullable: true })
+  partTrackingFactorRef3: number | null;
+
+  @Column({ type: 'bigint', name: 'PartTrackingFactorRef4', nullable: true })
+  partTrackingFactorRef4: number | null;
+
+  @Column({ type: 'bigint', name: 'PartTrackingFactorRef5', nullable: true })
+  partTrackingFactorRef5: number | null;
+
+  @Column({ type: 'character varying', name: 'TrackingFactorValue', nullable: true })
+  trackingFactorValue: string | null;
+
+}

@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource, LessThanOrEqual } from 'typeorm';
 import { CrudService } from '../../core';
+import { EventsService, DomainEvents } from '../../events';
 import { Warehouse } from './entities/warehouse.entity';
 import { Inventory } from './entities/inventory.entity';
 import {
@@ -77,6 +78,7 @@ export class InventoryDocumentsService extends CrudService<InventoryDocument> {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
     private readonly dataSource: DataSource,
+    private readonly events: EventsService,
   ) {
     super(repository);
   }
@@ -214,6 +216,16 @@ export class InventoryDocumentsService extends CrudService<InventoryDocument> {
       await queryRunner.manager.save(doc);
 
       await queryRunner.commitTransaction();
+
+      this.events.emit(DomainEvents.INVENTORY_CONFIRMED, {
+        type: DomainEvents.INVENTORY_CONFIRMED,
+        entityId: id,
+        data: {
+          documentNumber: doc.documentNumber,
+          documentType: doc.documentType,
+        },
+      });
+
       return this.findOne(doc.id);
     } catch (err) {
       await queryRunner.rollbackTransaction();
@@ -230,6 +242,11 @@ export class InventoryDocumentsService extends CrudService<InventoryDocument> {
     }
     doc.status = DocumentStatus.CANCELLED;
     await this.repository.save(doc);
+    this.events.emit(DomainEvents.INVENTORY_CANCELLED, {
+      type: DomainEvents.INVENTORY_CANCELLED,
+      entityId: id,
+      data: { documentNumber: doc.documentNumber },
+    });
     return this.findOne(doc.id);
   }
 

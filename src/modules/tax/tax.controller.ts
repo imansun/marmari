@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { TaxTablesService } from './tax.service';
 import { PaginationDto, Roles } from '../../common';
 import { UserRole } from '../users/entities/user.entity';
+import { CreateTaxTableDto, UpdateTaxTableDto } from './dto/create-tax-table.dto';
+import { CalculateTaxDto } from './dto/calculate-tax.dto';
 
 @ApiTags('Tax')
 @ApiBearerAuth()
@@ -13,8 +15,8 @@ export class TaxController {
   @Post('tables')
   @Roles(UserRole.ADMIN, UserRole.FINANCE)
   @ApiOperation({ summary: 'Create a tax table' })
-  createTable(@Body() dto: any) {
-    return this.taxTablesService.create(dto);
+  createTable(@Body() dto: CreateTaxTableDto) {
+    return this.taxTablesService.create(dto as any);
   }
 
   @Get('tables')
@@ -31,21 +33,32 @@ export class TaxController {
     return this.taxTablesService.findOne(id);
   }
 
-  @Get('calculate/:tableCode')
+  @Put('tables/:id')
+  @Roles(UserRole.ADMIN, UserRole.FINANCE)
+  @ApiOperation({ summary: 'Update a tax table' })
+  updateTable(@Param('id') id: string, @Body() dto: UpdateTaxTableDto) {
+    return this.taxTablesService.update(id, dto as any);
+  }
+
+  @Delete('tables/:id')
+  @Roles(UserRole.ADMIN, UserRole.FINANCE)
+  @ApiOperation({ summary: 'Delete a tax table' })
+  deleteTable(@Param('id') id: string) {
+    return this.taxTablesService.remove(id);
+  }
+
+  @Post('calculate')
   @ApiOperation({ summary: 'Calculate tax for an amount' })
-  async calculate(
-    @Param('tableCode') tableCode: string,
-    @Query('amount') amount: string,
-  ) {
+  async calculate(@Body() dto: CalculateTaxDto) {
     const taxAmount = await this.taxTablesService.calculateTax(
-      tableCode,
-      parseFloat(amount),
+      dto.tableCode,
+      dto.amount,
     );
     return {
-      tableCode,
-      amount: parseFloat(amount),
+      tableCode: dto.tableCode,
+      amount: dto.amount,
       taxAmount,
-      total: parseFloat(amount) + taxAmount,
+      total: dto.amount + taxAmount,
     };
   }
 }

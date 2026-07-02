@@ -3,6 +3,7 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { ConfigService } from '@nestjs/config';
 import { SearchController } from './search.controller';
 import { SearchService } from './search.service';
+import { SearchIndexSubscriber } from '../../database/subscribers/search-index.subscriber';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { SearchService } from './search.service';
     }),
   ],
   controllers: [SearchController],
-  providers: [SearchService],
+  providers: [SearchService, SearchIndexSubscriber],
   exports: [SearchService],
 })
 export class SearchModule {}

@@ -2,6 +2,7 @@ import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CrudService } from '../../core';
+import { EventsService, DomainEvents } from '../../events';
 import { Department } from './entities/department.entity';
 import {
   Employee,
@@ -28,6 +29,7 @@ export class EmployeesService extends CrudService<Employee> {
   constructor(
     @InjectRepository(Employee)
     repository: Repository<Employee>,
+    private readonly events: EventsService,
   ) {
     super(repository);
   }
@@ -58,7 +60,13 @@ export class EmployeesService extends CrudService<Employee> {
         'Employee number or national ID already exists',
       );
 
-    return this.repository.save(this.repository.create(dto));
+    const saved = await this.repository.save(this.repository.create(dto));
+    this.events.emit(DomainEvents.EMPLOYEE_CREATED, {
+      type: DomainEvents.EMPLOYEE_CREATED,
+      entityId: saved.id,
+      data: { employeeNumber: saved.employeeNumber, fullName: `${saved.firstName} ${saved.lastName}` },
+    });
+    return saved;
   }
 
   async findByDepartment(departmentId: string): Promise<Employee[]> {
@@ -76,6 +84,28 @@ export class EmployeesService extends CrudService<Employee> {
     const employee = await this.findOne(id);
     employee.status = EmployeeStatus.TERMINATED;
     employee.terminationDate = terminationDate;
-    return this.repository.save(employee);
+    const saved = await this.repository.save(employee);
+    this.events.emit(DomainEvents.EMPLOYEE_TERMINATED, {
+      type: DomainEvents.EMPLOYEE_TERMINATED,
+      entityId: id,
+      data: { employeeNumber: saved.employeeNumber, fullName: `${saved.firstName} ${saved.lastName}` },
+    });
+    return saved;
+  }
+
+  async getHeadcount(departmentId?: string): Promise<{ total: number; active: number; byDepartment: Record<string, number> }> {
+    const where: any = {};
+    if (departmentId) where.departmentId = departmentId;
+
+    const employees = await this.repository.find({ where, relations: { department: true } });
+    const active = employees.filter((e) => e.status === EmployeeStatus.ACTIVE).length;
+    const byDepartment: Record<string, number> = {};
+
+    for (const emp of employees) {
+      const deptName = emp.department?.name || 'Unknown';
+      byDepartment[deptName] = (byDepartment[deptName] || 0) + 1;
+    }
+
+    return { total: employees.length, active, byDepartment };
   }
 }

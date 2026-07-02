@@ -5,8 +5,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, LessThan } from 'typeorm';
 import { CrudService } from '../../core';
+import { EventsService, DomainEvents } from '../../events';
 import {
   Invoice,
   InvoiceItem,
@@ -21,6 +22,7 @@ export class InvoicingService extends CrudService<Invoice> {
     repository: Repository<Invoice>,
     @InjectRepository(InvoiceItem)
     private readonly itemRepository: Repository<InvoiceItem>,
+    private readonly events: EventsService,
   ) {
     super(repository);
   }
@@ -103,6 +105,11 @@ export class InvoicingService extends CrudService<Invoice> {
     }
     inv.status = InvoiceStatus.ISSUED;
     await this.repository.save(inv);
+    this.events.emit(DomainEvents.INVOICE_ISSUED, {
+      type: DomainEvents.INVOICE_ISSUED,
+      entityId: id,
+      data: { invoiceNumber: inv.invoiceNumber, finalAmount: inv.finalAmount },
+    });
     return this.findOne(inv.id);
   }
 
@@ -113,6 +120,11 @@ export class InvoicingService extends CrudService<Invoice> {
     }
     inv.status = InvoiceStatus.PAID;
     await this.repository.save(inv);
+    this.events.emit(DomainEvents.INVOICE_PAID, {
+      type: DomainEvents.INVOICE_PAID,
+      entityId: id,
+      data: { invoiceNumber: inv.invoiceNumber, finalAmount: inv.finalAmount },
+    });
     return this.findOne(inv.id);
   }
 
@@ -126,7 +138,70 @@ export class InvoicingService extends CrudService<Invoice> {
     }
     inv.status = InvoiceStatus.CANCELLED;
     await this.repository.save(inv);
+    this.events.emit(DomainEvents.INVOICE_CANCELLED, {
+      type: DomainEvents.INVOICE_CANCELLED,
+      entityId: id,
+      data: { invoiceNumber: inv.invoiceNumber },
+    });
     return this.findOne(inv.id);
+  }
+
+  async getOverdue(): Promise<Invoice[]> {
+    const now = new Date();
+    return this.repository.find({
+      where: {
+        status: InvoiceStatus.ISSUED,
+        dueDate: LessThan(now),
+      },
+      relations: { party: true, items: { product: true } },
+      order: { dueDate: 'ASC' },
+    });
+  }
+
+  async getSummary(): Promise<{
+    draft: number;
+    issued: number;
+    paid: number;
+    cancelled: number;
+    totalIssued: number;
+    totalPaid: number;
+    totalOutstanding: number;
+    totalAmount: number;
+    count: number;
+  }> {
+    const all = await this.repository.find();
+    const draft = all.filter((i) => i.status === InvoiceStatus.DRAFT).length;
+    const issued = all.filter((i) => i.status === InvoiceStatus.ISSUED).length;
+    const paid = all.filter((i) => i.status === InvoiceStatus.PAID).length;
+    const cancelled = all.filter(
+      (i) => i.status === InvoiceStatus.CANCELLED,
+    ).length;
+    const totalIssued = all
+      .filter((i) => i.status === InvoiceStatus.ISSUED)
+      .reduce((s, i) => s + Number(i.finalAmount), 0);
+    const totalPaid = all
+      .filter((i) => i.status === InvoiceStatus.PAID)
+      .reduce((s, i) => s + Number(i.finalAmount), 0);
+    const totalOutstanding = totalIssued;
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayInvoices = all.filter((i) => i.date >= todayStart);
+    const totalAmount = todayInvoices.reduce(
+      (s, i) => s + Number(i.finalAmount),
+      0,
+    );
+    const count = todayInvoices.length;
+    return {
+      draft,
+      issued,
+      paid,
+      cancelled,
+      totalIssued,
+      totalPaid,
+      totalOutstanding,
+      totalAmount,
+      count,
+    };
   }
 
   async findByParty(partyId: string): Promise<Invoice[]> {
